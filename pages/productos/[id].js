@@ -60,6 +60,7 @@ const Producto = () => {
   const [producto, setProducto] = useState({});
   const [error, setError] = useState(false);
   const [comentario, setComentario] = useState({});
+  const [vaciarComentrio, setVaciarComentario] = useState('')
   const [consultaDB, setConsultaDB] = useState(true)
 
   //Routing pra itener el id actual
@@ -139,12 +140,15 @@ const votarProducto =async () => {
   setConsultaDB(true); //hay un voto y consulta a la base de datos
 }
 
-//Funciones para c rear cpomentarios
+//Funciones para crear cpomentarios
 const comentariosChange = e => {
     setComentario({
       ...comentario,
       [e.target.name] : e.target.value
     })
+
+    setVaciarComentario(e.target.value)
+
 }
 
 //Identifica si el comentario es ele creador 
@@ -156,6 +160,8 @@ const esCreador = id => {
 
 const agregarComentario =async e => {
   e.preventDefault();
+
+  
 
   if (!usuario) {
     return Router.push("/login");
@@ -175,12 +181,15 @@ const agregarComentario =async e => {
   });
 
   //Actualizar el state
-  setComentario({
+  setProducto({
     ...producto,
     comentarios: nuevosComentarios,
   });
+  
+  setVaciarComentario("");
 
   setConsultaDB(true); //hay un comentario y consulta a la base de datos
+  
 }
 
 //Fucion que revisa que el reaor del producto sea el mismo autenticado
@@ -248,6 +257,7 @@ const eliminarProducto = async() => {
                     <input
                       type="text"
                       name="mensaje"
+                      value={vaciarComentrio}
                       onChange={comentariosChange}
                     />
                   </Campo>
